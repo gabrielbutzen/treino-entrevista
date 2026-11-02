@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treino da Entrevista do Mestrado</title>
+<meta name="description" content="Cartões de treino para a entrevista do mestrado: estude as perguntas e simule a entrevista com cronômetro.">
+<style>
+  :root {
+    --bg: #f6f3ee;
+    --surface: #ffffff;
+    --ink: #1f2a2e;
+    --muted: #5d6b70;
+    --line: #e2dcd2;
+    --accent: #1f6f5c;
+    --accent-ink: #ffffff;
+    --accent-soft: #e3f1ec;
+    --warn: #b4441f;
+    --warn-soft: #fbe9e2;
+    --ok: #2f7d32;
+    --ok-soft: #e5f4e4;
+    --tag-acad: #2b5c9e;
+    --tag-acad-soft: #e7f0fb;
+    --tag-prof: #8a4b0f;
+    --tag-prof-soft: #f9eeda;
+    --shadow: 0 6px 24px rgba(31, 42, 46, 0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141a1c;
+      --surface: #1e2629;
+      --ink: #eef2f1;
+      --muted: #a3b1b4;
+      --line: #2f3a3e;
+      --accent: #5cc3a6;
+      --accent-ink: #0f1a17;
+      --accent-soft: #1d3a33;
+      --warn: #f08a66;
+      --warn-soft: #3d2620;
+      --ok: #7fd083;
+      --ok-soft: #1f3a22;
+      --tag-acad: #8db8f2;
+      --tag-acad-soft: #1e2d42;
+      --tag-prof: #f0bf7a;
+      --tag-prof-soft: #3a2d1a;
+      --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 48px; }
+  header h1 { font-size: 1.45rem; line-height: 1.2; margin: 0 0 4px; }
+  header p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 5px; margin: 18px 0 12px; }
+  .tabs button { border: 0; background: transparent; color: var(--muted); font: inherit; font-weight: 600; padding: 10px; border-radius: 10px; cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .chip { border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 0.9rem; padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+  .chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); font-weight: 600; }
+
+  .meta { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; gap: 8px; flex-wrap: wrap; }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 22px 20px; min-height: 280px; display: flex; flex-direction: column; }
+  .card.clickable { cursor: pointer; }
+  .tag { display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; margin-bottom: 12px; align-self: flex-start; }
+  .tag.ambos { background: var(--accent-soft); color: var(--accent); }
+  .tag.acad { background: var(--tag-acad-soft); color: var(--tag-acad); }
+  .tag.prof { background: var(--tag-prof-soft); color: var(--tag-prof); }
+  .q { font-size: 1.35rem; font-weight: 700; line-height: 1.3; margin: 0; }
+  .hint { margin-top: auto; padding-top: 18px; color: var(--muted); font-size: 0.9rem; }
+  .back h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 14px 0 4px; }
+  .back h3:first-of-type { margin-top: 4px; }
+  .back p, .back ul { margin: 0; }
+  .back ul { padding-left: 20px; }
+  .back li { margin: 3px 0; }
+  .careful { margin-top: 14px; background: var(--warn-soft); border-radius: 10px; padding: 10px 12px; font-size: 0.95rem; }
+  .careful strong { color: var(--warn); }
+  .backq { font-weight: 700; margin: 0 0 6px; }
+
+  .row { display: flex; gap: 8px; margin-top: 12px; }
+  .row > * { flex: 1; }
+  .btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-weight: 600; padding: 12px 10px; border-radius: 12px; cursor: pointer; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn.ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+  .btn.warn { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
+  .btn:disabled { opacity: 0.45; cursor: default; }
+  .status { font-weight: 600; }
+  .status.ok { color: var(--ok); }
+  .status.warn { color: var(--warn); }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px; box-shadow: var(--shadow); }
+  .panel h2 { font-size: 1.15rem; margin: 0 0 8px; }
+  .panel p { margin: 0 0 12px; color: var(--muted); }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; }
+  label.small { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+
+  .timer { font-variant-numeric: tabular-nums; font-size: 3rem; font-weight: 800; text-align: center; margin: 6px 0 2px; }
+  .timer.over { color: var(--warn); }
+  .timer-label { text-align: center; color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+  .bar { height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; margin-bottom: 16px; }
+  .bar > div { height: 100%; background: var(--accent); width: 100%; transition: width 0.25s linear; }
+
+  .summary ul { padding-left: 20px; }
+  .summary li { margin: 6px 0; }
+  .foot { margin-top: 28px; color: var(--muted); font-size: 0.85rem; text-align: center; }
+  .linkbtn { background: none; border: 0; color: var(--muted); text-decoration: underline; font: inherit; font-size: 0.85rem; cursor: pointer; padding: 0; }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { .bar > div { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Treino da Entrevista do Mestrado</h1>
+    <p>Cartões da Trilha da Entrevista · Imersão Sua Vaga No Mestrado</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Modo de treino">
+    <button role="tab" id="tab-estudar" aria-selected="true">Estudar</button>
+    <button role="tab" id="tab-simular" aria-selected="false">Simular entrevista</button>
+  </div>
+
+  <div class="filters" role="group" aria-label="Tipo de mestrado">
+    <button class="chip" data-filter="todos" aria-pressed="true">Todas as perguntas</button>
+    <button class="chip" data-filter="acad" aria-pressed="false">Mestrado acadêmico</button>
+    <button class="chip" data-filter="prof" aria-pressed="false">Mestrado profissional</button>
+  </div>
+
+  <!-- ESTUDAR -->
+  <section id="estudar">
+    <div class="meta">
+      <span id="study-count"></span>
+      <span id="study-progress"></span>
+    </div>
+    <div id="study-card" class="card clickable" tabindex="0" role="button" aria-label="Virar cartão"></div>
+    <div class="row">
+      <button class="btn" id="prev">Anterior</button>
+      <button class="btn primary" id="flip">Virar</button>
+      <button class="btn" id="next">Próxima</button>
+    </div>
+    <div class="row">
+      <button class="btn warn" id="mark-rev">Revisar</button>
+      <button class="btn ok" id="mark-ok">Dominei</button>
+    </div>
+    <div class="row">
+      <button class="btn" id="only-rev">Ver só as que marquei "revisar"</button>
+    </div>
+  </section>
+
+  <!-- SIMULAR -->
+  <section id="simular" hidden>
+    <div id="sim-setup" class="panel">
+      <h2>Simule a entrevista</h2>
+      <p>As perguntas aparecem uma de cada vez, em ordem sorteada. Responda em voz alta, como se a banca estivesse na sua frente. Quando terminar, veja o que a banca queria ouvir e avalie a sua resposta.</p>
+      <label class="small">Tempo por resposta</label>
+      <div class="opts" id="opt-time">
+        <button class="chip" data-v="60" aria-pressed="false">1 min</button>
+        <button class="chip" data-v="120" aria-pressed="true">2 min</button>
+        <button class="chip" data-v="180" aria-pressed="false">3 min</button>
+      </div>
+      <label class="small">Quantas perguntas</label>
+      <div class="opts" id="opt-qty">
+        <button class="chip" data-v="5" aria-pressed="true">5</button>
+        <button class="chip" data-v="10" aria-pressed="false">10</button>
+        <button class="chip" data-v="all" aria-pressed="false">Todas</button>
+        <button class="chip" data-v="rev" aria-pressed="false">Só as "revisar"</button>
+      </div>
+      <button class="btn primary" id="sim-start" style="width:100%">Começar</button>
+    </div>
+
+    <div id="sim-run" hidden>
+      <div class="meta"><span id="sim-count"></span><button class="linkbtn" id="sim-stop">Encerrar</button></div>
+      <div class="timer" id="sim-timer">2:00</div>
+      <div class="timer-label" id="sim-timer-label">Responda em voz alta</div>
+      <div class="bar"><div id="sim-bar"></div></div>
+      <div id="sim-card" class="card"></div>
+      <div class="row" id="sim-actions-1">
+        <button class="btn primary" id="sim-done">Terminei a resposta</button>
+      </div>
+      <div class="row" id="sim-actions-2" hidden>
+        <button class="btn warn" id="sim-rev">Preciso revisar</button>
+        <button class="btn ok" id="sim-ok">Mandei bem</button>
+      </div>
+    </div>
+
+    <div id="sim-end" class="panel summary" hidden>
+      <h2>Fim da simulação</h2>
+      <p id="sim-result"></p>
+      <div id="sim-revlist"></div>
+      <div class="row">
+        <button class="btn" id="sim-again">Nova simulação</button>
+        <button class="btn primary" id="sim-redo">Treinar as "revisar"</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <p>O que você marca fica salvo só neste aparelho e neste navegador.</p>
+    <button class="linkbtn" id="reset">Apagar minhas marcações</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // tipo: "ambos" | "acad" | "prof"
+  var CARDS = [
+    { id: "pitch", tipo: "ambos", q: "Fale um pouco do seu projeto.",
+      quer: "Clareza e domínio do projeto em até 2 minutos, sem ler.",
+      roteiro: ["Acadêmico: tema, problema, objetivo, recorte, justificativa (só a mais forte) e método.", "Profissional: contexto da sua escola, problema, objetivo, método, recurso educacional e impacto.", "Feche voltando à pergunta central da pesquisa."],
+      cuidado: "Não leia o resumo nem comece pela contextualização mais longa do mundo." },
+    { id: "problema", tipo: "ambos", q: "Qual é o seu problema de pesquisa?",
+      quer: "Uma pergunta clara, não um tema.",
+      roteiro: ["\"A pergunta central da minha pesquisa é...\"", "Por que essa pergunta ainda não está respondida.", "Como os seus objetivos respondem a ela."],
+      cuidado: "Confundir tema com problema é um dos erros que mais reprovam." },
+    { id: "relevancia", tipo: "ambos", q: "Por que esse tema é relevante?",
+      quer: "Relevância para quem, em qual debate e qual lacuna a pesquisa enfrenta.",
+      roteiro: ["A sua justificativa mais forte, em uma frase.", "Um dado ou fato concreto que mostre o tamanho do problema.", "O que muda (na área ou na escola) se a pesquisa for feita."],
+      cuidado: "Evite justificativas genéricas como \"é um tema muito importante\"." },
+    { id: "diferencia", tipo: "ambos", q: "O que diferencia a sua pesquisa de outras já feitas?",
+      quer: "Que você conhece o que já foi pesquisado sobre o tema.",
+      roteiro: ["Cite um ou dois trabalhos próximos ao seu.", "Diga o que eles não fizeram (recorte, fonte, contexto, método).", "Mostre o que a sua pesquisa acrescenta."],
+      cuidado: "Não diga que \"ninguém pesquisou isso\": a banca quase sempre conhece alguém que pesquisou." },
+    { id: "metodo", tipo: "ambos", q: "Qual será a sua metodologia?",
+      quer: "O que você vai analisar, como, com quais fontes ou dados, e se isso é executável.",
+      roteiro: ["O que você vai analisar (corpus, sujeitos, documentos, dados).", "Como vai produzir e analisar os dados (procedimentos e técnica).", "Por que esse caminho responde ao seu problema."],
+      cuidado: "Metodologia vaga (\"vou fazer uma pesquisa qualitativa\") soa como projeto que não foi pensado." },
+    { id: "autores", tipo: "ambos", q: "Quais autores fundamentam o seu trabalho?",
+      quer: "Domínio de um ou dois autores centrais e do que cada um traz para o projeto.",
+      roteiro: ["Autor 1: o conceito que você usa dele.", "Por que esse conceito ajuda a pensar o seu problema.", "Se fizer sentido, um segundo autor e como ele dialoga com o primeiro."],
+      cuidado: "Não faça lista de nomes. Só cite quem você sabe explicar." },
+    { id: "trajetoria", tipo: "ambos", q: "Como a sua trajetória se relaciona com o tema?",
+      quer: "Que o projeto nasce da sua história e que você não caiu de paraquedas no tema.",
+      roteiro: ["De onde veio o interesse (sala de aula, TCC, formação, experiência).", "O que a sua trajetória já te deu para fazer essa pesquisa.", "Como o mestrado continua esse caminho."],
+      cuidado: "Saiba tudo que está no seu currículo e no seu memorial: a banca pode perguntar qualquer item." },
+    { id: "viavel", tipo: "ambos", q: "Isso é viável no prazo do mestrado?",
+      quer: "Um recorte realista e a sua capacidade de ajustar.",
+      roteiro: ["Qual é o núcleo da pesquisa, aquilo que não muda.", "Por que esse núcleo cabe no prazo.", "O que pode ser ajustado com o orientador, se necessário."],
+      cuidado: "Essa pergunta costuma aparecer quando o recorte parece amplo. Não se defenda: mostre o núcleo." },
+    { id: "dificuldades", tipo: "ambos", q: "Quais dificuldades você imagina encontrar?",
+      quer: "Maturidade para prever problemas e já pensar em soluções.",
+      roteiro: ["Uma dificuldade real e possível.", "Como você pretende contorná-la.", "Um plano B (outra fonte, outro grupo, outro procedimento)."],
+      cuidado: "Nunca apresente uma dificuldade sem solução: vira \"essa pesquisa não vai sair\"." },
+    { id: "cortaria", tipo: "ambos", q: "O que você cortaria se precisasse ajustar o projeto?",
+      quer: "Flexibilidade e clareza sobre o que é essencial.",
+      roteiro: ["Corte o acessório (um objetivo secundário, parte do recorte).", "Mantenha a pergunta central.", "\"Com o orientador, eu ajustaria isso para...\""],
+      cuidado: "Cortar o núcleo do projeto mostra que você não sabe o que é essencial nele." },
+    { id: "bolsa-acad", tipo: "acad", q: "Você precisa de bolsa?",
+      quer: "Que você conclui o mestrado com ou sem bolsa, porque nem todo aprovado recebe uma.",
+      roteiro: ["A bolsa permitiria dedicação maior à pesquisa e ao programa (eventos, grupos, artigos).", "Sem ela, você organiza a rotina para dar conta do curso.", "Feche com o seu compromisso com a pesquisa."],
+      cuidado: "\"Sem bolsa eu não consigo\" passa a ideia de que você pode abandonar o curso." },
+    { id: "bolsa-prof", tipo: "prof", q: "Você precisa de bolsa?",
+      quer: "Que você conclui o mestrado com ou sem bolsa.",
+      roteiro: ["A bolsa ajudaria, mas o mestrado já faz parte da sua rotina de professor(a).", "A pesquisa acontece na sala de aula onde você trabalha.", "Você faz o curso com ou sem bolsa."],
+      cuidado: "No PROFEI, a bolsa depende de cota das agências e de edital próprio. Ela não é garantida." },
+    { id: "tempo-acad", tipo: "acad", q: "Você vai conseguir conciliar trabalho e mestrado?",
+      quer: "Um plano concreto e honesto de tempo.",
+      roteiro: ["Como você vai organizar a semana (dias e horários para ler e escrever).", "O que muda no seu trabalho (carga, apoio da escola, acordos).", "Por que você está preparado para esse ritmo."],
+      cuidado: "Prometa só o que consegue cumprir. A banca pode aprofundar a pergunta." },
+    { id: "tempo-prof", tipo: "prof", q: "Você vai conseguir conciliar trabalho e mestrado?",
+      quer: "Que você vai dar conta do curso sem sair da sala de aula.",
+      roteiro: ["A sua prática é justamente o campo da pesquisa.", "Como você vai organizar o tempo de estudo e escrita.", "Que apoio você tem (escola, rede, família)."],
+      cuidado: "No PROFEI, ser professor regente com pelo menos 20h semanais é requisito. Não diga que vai deixar a sala de aula." },
+    { id: "orientador", tipo: "ambos", q: "Você aceita ser orientado por outra pessoa do programa?",
+      quer: "Flexibilidade e conhecimento do programa.",
+      roteiro: ["Sim, com tranquilidade.", "Cite um ou dois professores cuja pesquisa conversa com a sua.", "Diga em que ponto eles poderiam contribuir."],
+      cuidado: "Responder só \"sim\" desperdiça a chance de mostrar que você estudou o programa." },
+    { id: "programa-acad", tipo: "acad", q: "Por que você escolheu este programa?",
+      quer: "Que a escolha foi pensada: aderência à linha, ao programa e ao orientador.",
+      roteiro: ["\"Meu projeto se encaixa na linha... porque...\"", "O que o programa oferece para a sua pesquisa (debates, grupos, produção).", "\"Identifiquei aproximação com a produção de... sobretudo em...\""],
+      cuidado: "Não diga \"é perto de casa\", \"sempre quis estudar aqui\" ou \"o professor é famoso\"." },
+    { id: "programa-prof", tipo: "prof", q: "Por que você escolheu este programa?",
+      quer: "Que você sabe por que um mestrado profissional e por que este.",
+      roteiro: ["Você quer pesquisar a sua própria prática, e não só estudar um tema.", "A linha escolhida conversa com o problema da sua escola.", "O recurso educacional volta para a escola e para os colegas."],
+      cuidado: "No PROFEI, as razões da opção pelo programa estão entre o que a entrevista avalia." },
+    { id: "recurso", tipo: "prof", q: "Como o seu recurso educacional resolve o problema que você descreveu?",
+      quer: "Ligação direta entre problema, dados da pesquisa e recurso.",
+      roteiro: ["O que é o recurso e para quem ele é.", "Qual parte do problema ele enfrenta.", "Como os dados da pesquisa vão orientar a construção dele."],
+      cuidado: "No PROFEI, a apresentação do Recurso Educacional vale 20 dos 100 pontos da arguição." },
+    { id: "naosei", tipo: "ambos", q: "Você leu tal autor? Como ele entraria no seu projeto?",
+      quer: "Honestidade intelectual e capacidade de raciocinar na hora.",
+      roteiro: ["Se não leu, diga que não leu e agradeça a sugestão.", "Mostre um raciocínio: \"pelo que conheço do debate, ele poderia contribuir em...\"", "Volte para o que você domina no projeto."],
+      cuidado: "Fingir que leu é o erro mais fácil de a banca desmascarar." }
+  ];
+
+  // ---------- armazenamento (só neste navegador) ----------
+  var KEY = "treino-entrevista-v1";
+  var marks = {};
+  try { marks = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { marks = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(marks)); } catch (e) {} }
+
+  // ---------- utilitários ----------
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
+  var TAGS = { ambos: "Os dois", acad: "Acadêmico", prof: "Profissional" };
+  function tagHtml(t) { return '<span class="tag ' + t + '">' + TAGS[t] + "</span>"; }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function backHtml(c) {
+    return '<div class="back">' + tagHtml(c.tipo) +
+      '<p class="backq">' + esc(c.q) + "</p>" +
+      "<h3>O que a banca quer ver</h3><p>" + esc(c.quer) + "</p>" +
+      "<h3>Roteiro em 3 tópicos</h3><ul>" + c.roteiro.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") + "</ul>" +
+      '<div class="careful"><strong>Cuidado:</strong> ' + esc(c.cuidado) + "</div></div>";
+  }
+
+  // ---------- filtro ----------
+  var filter = "todos";
+  function pool() {
+    return CARDS.filter(function (c) {
+      if (filter === "todos") return true;
+      return c.tipo === "ambos" || c.tipo === filter;
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".filters .chip"), function (b) {
+    b.addEventListener("click", function () {
+      filter = b.getAttribute("data-filter");
+      Array.prototype.forEach.call(document.querySelectorAll(".filters .chip"), function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      onlyRev = false; idx = 0; flipped = false; renderStudy();
+    });
+  });
+
+  // ---------- abas ----------
+  function setTab(t) {
+    $("tab-estudar").setAttribute("aria-selected", t === "estudar" ? "true" : "false");
+    $("tab-simular").setAttribute("aria-selected", t === "simular" ? "true" : "false");
+    $("estudar").hidden = t !== "estudar";
+    $("simular").hidden = t !== "simular";
+    if (t === "estudar") { stopTimer(); renderStudy(); }
+  }
+  $("tab-estudar").addEventListener("click", function () { setTab("estudar"); });
+  $("tab-simular").addEventListener("click", function () { setTab("simular"); });
+
+  // ---------- estudar ----------
+  var idx = 0, flipped = false, onlyRev = false;
+  function studyList() {
+    var p = pool();
+    if (onlyRev) p = p.filter(function (c) { return marks[c.id] === "rev"; });
+    return p;
+  }
+  function renderStudy() {
+    var list = studyList();
+    var all = pool();
+    var ok = all.filter(function (c) { return marks[c.id] === "ok"; }).length;
+    var rev = all.filter(function (c) { return marks[c.id] === "rev"; }).length;
+    $("study-progress").innerHTML = '<span class="status ok">' + ok + " dominei</span> · " + '<span class="status warn">' + rev + " revisar</span>";
+    $("only-rev").textContent = onlyRev ? "Voltar para todas as perguntas" : "Ver só as que marquei \"revisar\" (" + rev + ")";
+    var cardEl = $("study-card");
+    if (!list.length) {
+      $("study-count").textContent = "Nenhuma pergunta aqui";
+      cardEl.innerHTML = '<p class="q">Nenhuma pergunta marcada como "revisar".</p><p class="hint">Volte para todas as perguntas e marque as que você ainda precisa treinar.</p>';
+      ["prev", "next", "flip", "mark-ok", "mark-rev"].forEach(function (b) { $(b).disabled = true; });
+      return;
+    }
+    ["flip", "mark-ok", "mark-rev"].forEach(function (b) { $(b).disabled = false; });
+    if (idx >= list.length) idx = list.length - 1;
+    if (idx < 0) idx = 0;
+    var c = list[idx];
+    $("study-count").textContent = "Pergunta " + (idx + 1) + " de " + list.length;
+    var m = marks[c.id];
+    var badge = m === "ok" ? ' <span class="status ok">· dominei</span>' : m === "rev" ? ' <span class="status warn">· revisar</span>' : "";
+    if (!flipped) {
+      cardEl.innerHTML = tagHtml(c.tipo) + '<p class="q">' + esc(c.q) + "</p>" +
+        '<p class="hint">Responda em voz alta antes de virar o cartão. Toque para ver o que a banca quer ouvir.' + badge + "</p>";
+    } else {
+      cardEl.innerHTML = backHtml(c);
+    }
+    $("flip").textContent = flipped ? "Ver pergunta" : "Virar";
+    $("prev").disabled = idx === 0;
+    $("next").disabled = idx === list.length - 1;
+  }
+  function flip() { flipped = !flipped; renderStudy(); }
+  $("study-card").addEventListener("click", flip);
+  $("study-card").addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+  $("flip").addEventListener("click", flip);
+  $("prev").addEventListener("click", function () { idx--; flipped = false; renderStudy(); });
+  $("next").addEventListener("click", function () { idx++; flipped = false; renderStudy(); });
+  function mark(v) {
+    var list = studyList(); if (!list.length) return;
+    var c = list[idx];
+    marks[c.id] = v; save();
+    var after = studyList();
+    flipped = false;
+    if (onlyRev && v === "ok") { if (idx >= after.length) idx = after.length - 1; }
+    else if (idx < after.length - 1) idx++;
+    renderStudy();
+  }
+  $("mark-ok").addEventListener("click", function () { mark("ok"); });
+  $("mark-rev").addEventListener("click", function () { mark("rev"); });
+  $("only-rev").addEventListener("click", function () { onlyRev = !onlyRev; idx = 0; flipped = false; renderStudy(); });
+
+  // ---------- simular ----------
+  var simTime = 120, simQty = "5", queue = [], qi = 0, results = [], timerId = null, remaining = 0;
+  function bindOpts(groupId, setter) {
+    Array.prototype.forEach.call(document.querySelectorAll("#" + groupId + " .chip"), function (b) {
+      b.addEventListener("click", function () {
+        Array.prototype.forEach.call(document.querySelectorAll("#" + groupId + " .chip"), function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        setter(b.getAttribute("data-v"));
+      });
+    });
+  }
+  bindOpts("opt-time", function (v) { simTime = parseInt(v, 10); });
+  bindOpts("opt-qty", function (v) { simQty = v; });
+
+  function fmt(s) { var neg = s < 0; s = Math.abs(s); var m = Math.floor(s / 60), r = s % 60; return (neg ? "+" : "") + m + ":" + (r < 10 ? "0" : "") + r; }
+  function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
+  function tick() {
+    remaining--;
+    var t = $("sim-timer");
+    t.textContent = fmt(remaining < 0 ? -remaining : remaining);
+    if (remaining < 0) {
+      t.classList.add("over");
+      $("sim-timer-label").textContent = "Tempo esgotado: feche a resposta";
+      $("sim-bar").style.width = "0%";
+      if (remaining === -1 && navigator.vibrate) { try { navigator.vibrate(200); } catch (e) {} }
+    } else {
+      $("sim-bar").style.width = (remaining / simTime * 100) + "%";
+    }
+  }
+  function startSim(list) {
+    if (!list.length) { alert("Não há perguntas para essa escolha. Escolha outra opção."); return; }
+    queue = list; qi = 0; results = [];
+    $("sim-setup").hidden = true; $("sim-end").hidden = true; $("sim-run").hidden = false;
+    showQuestion();
+  }
+  function showQuestion() {
+    var c = queue[qi];
+    $("sim-count").textContent = "Pergunta " + (qi + 1) + " de " + queue.length;
+    $("sim-card").innerHTML = tagHtml(c.tipo) + '<p class="q">' + esc(c.q) + "</p>" + '<p class="hint">Responda em voz alta. Ideia central, explicação breve, fechamento.</p>';
+    $("sim-actions-1").hidden = false; $("sim-actions-2").hidden = true;
+    remaining = simTime;
+    var t = $("sim-timer"); t.classList.remove("over"); t.textContent = fmt(remaining);
+    $("sim-timer-label").textContent = "Responda em voz alta";
+    $("sim-bar").style.width = "100%";
+    stopTimer(); timerId = setInterval(tick, 1000);
+  }
+  $("sim-start").addEventListener("click", function () {
+    var p = pool();
+    if (simQty === "rev") p = p.filter(function (c) { return marks[c.id] === "rev"; });
+    p = shuffle(p);
+    if (simQty === "5" || simQty === "10") p = p.slice(0, parseInt(simQty, 10));
+    startSim(p);
+  });
+  $("sim-done").addEventListener("click", function () {
+    stopTimer();
+    var used = simTime - remaining;
+    $("sim-timer-label").textContent = "Você usou " + fmt(used).replace("+", "");
+    $("sim-card").innerHTML = backHtml(queue[qi]);
+    $("sim-actions-1").hidden = true; $("sim-actions-2").hidden = false;
+  });
+  function simMark(v) {
+    var c = queue[qi];
+    marks[c.id] = v; save();
+    results.push({ c: c, v: v });
+    qi++;
+    if (qi < queue.length) showQuestion(); else endSim();
+  }
+  $("sim-ok").addEventListener("click", function () { simMark("ok"); });
+  $("sim-rev").addEventListener("click", function () { simMark("rev"); });
+  $("sim-stop").addEventListener("click", function () { stopTimer(); endSim(); });
+  function endSim() {
+    stopTimer();
+    $("sim-run").hidden = true; $("sim-end").hidden = false;
+    var ok = results.filter(function (r) { return r.v === "ok"; }).length;
+    var rev = results.filter(function (r) { return r.v === "rev"; });
+    $("sim-result").textContent = results.length
+      ? "Você respondeu " + results.length + " pergunta(s): " + ok + " bem, " + rev.length + " para revisar."
+      : "Simulação encerrada antes da primeira resposta.";
+    $("sim-revlist").innerHTML = rev.length
+      ? "<p><strong>Treine de novo:</strong></p><ul>" + rev.map(function (r) { return "<li>" + esc(r.c.q) + "</li>"; }).join("") + "</ul>"
+      : (results.length ? "<p>Nenhuma pergunta para revisar nesta rodada. Que tal uma simulação com tempo menor?</p>" : "");
+    $("sim-redo").disabled = !pool().some(function (c) { return marks[c.id] === "rev"; });
+  }
+  $("sim-again").addEventListener("click", function () { $("sim-end").hidden = true; $("sim-setup").hidden = false; });
+  $("sim-redo").addEventListener("click", function () {
+    startSim(shuffle(pool().filter(function (c) { return marks[c.id] === "rev"; })));
+  });
+
+  // ---------- apagar ----------
+  $("reset").addEventListener("click", function () {
+    if (confirm("Apagar todas as suas marcações de \"dominei\" e \"revisar\"?")) { marks = {}; save(); idx = 0; flipped = false; onlyRev = false; renderStudy(); }
+  });
+
+  renderStudy();
+})();
+</script>
+</body>
+</html>
